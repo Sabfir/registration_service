@@ -17,29 +17,29 @@ public class EmailServiceImpl implements EmailService {
     private String password;
     private String smtpHost;
     private String smtpPort;
-    private Properties props;
+    private Session session;
 
     private EmailServiceImpl() {}
 
     //problem with setting fields by spring boot during processing constructor class
     @Override
     public void prepareService() {
-        props = new Properties();
+        Properties props = new Properties();
         props.put("mail.smtp.host", smtpHost);
         props.put("mail.smtp.socketFactory.port", smtpPort);
         props.put("mail.smtp.socketFactory.class",
                 "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.port", smtpPort);
-    }
-    @Override
-    public void sendConfirmEmail(User user) {
-        Session session = Session.getInstance(props,
+        session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(emailAddress, password);
                     }
                 });
+    }
+    @Override
+    public void sendConfirmEmail(User user) {
         try {
 
             Message message = new MimeMessage(session);
