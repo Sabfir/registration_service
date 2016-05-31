@@ -2,10 +2,11 @@ package service;
 
 import core.User;
 
-/**
- * Created by alex on 29.05.16.
- */
+import javax.jms.Session;
+import javax.mail.NoSuchProviderException;
+
 public interface EmailService {
-    void prepareService();
-    void sendConfirmEmail(User user);
+    void prepareService() throws NoSuchProviderException;
+    boolean sendConfirmEmail(User user);
+    boolean isServiceAccessible();
 }

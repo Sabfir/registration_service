@@ -11,47 +11,32 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-       <context:component-scan base-package="service" />
-       <jms:annotation-driven/>
+    <context:component-scan base-package="service"/>
 
-       <bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-              <constructor-arg index="0" value="tcp://192.168.202.168:61616" />
-       </bean>
+    <bean id="jmsConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory" scope="singleton">
+        <constructor-arg name="targetConnectionFactory" ref="amqConnectionFactory"/>
+        <property name="sessionCacheSize" value="10"/>
+    </bean>
 
-       <bean id="connectionFactory"
-             class="org.springframework.jms.connection.CachingConnectionFactory">
-              <constructor-arg ref="amqConnectionFactory"/>
-       </bean>
+    <bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory" scope="singleton">
+        <constructor-arg index="0" value="tcp://127.0.0.1:61616"/>
+    </bean>
 
-       <bean id="jmsListenerContainerFactory"
-             class="org.springframework.jms.config.DefaultJmsListenerContainerFactory">
-              <property name="connectionFactory" ref="connectionFactory" />
-              <property name="concurrency" value="3-10"/>
-       </bean>
+    <bean id="jmsListenerContainerFactory" class="org.springframework.jms.config.DefaultJmsListenerContainerFactory" scope="singleton">
+        <property name="connectionFactory" ref="jmsConnectionFactory"/>
+        <property name="concurrency" value="3-10"/>
+        <property name="sessionTransacted" value="true"/>
+    </bean>
 
-       <!-- Spring JMS Template -->
-       <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
-              <property name="connectionFactory" ref="connectionFactory"/>
-       </bean>
+    <!-- Spring JMS Template -->
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="jmsConnectionFactory"/>
+    </bean>
 
-       <!--<jms:annotation-driven/>-->
-
-       <!--<bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">-->
-              <!--<property name="brokerURL" value="tcp://localhost:61616">-->
-                     <!--<value>tcp://localhost:61616</value>-->
-              <!--</property>-->
-       <!--</bean>-->
-       <!--<bean id="jmsFactory" class="org.apache.activemq.pool.PooledConnectionFactory" destroy-method="stop">-->
-              <!--<property name="connectionFactory" ref="connectionFactory">-->
-              <!--</property>-->
-       <!--</bean>-->
-
-
-
-       <!--<bean id="myContainerFactory"-->
-             <!--class="org.springframework.jms.config.DefaultJmsListenerContainerFactory">-->
-              <!--<property name="connectionFactory" ref="connectionFactory"/>-->
-              <!--<property name="destinationResolver" ref="destinationResolver"/>-->
-              <!--<property name="concurrency" value="3-10"/>-->
-       <!--</bean>-->
+    <!--<bean autowire="default" id="connection" factory-bean="connectionFactory" factory-method="createConnection"/>-->
+    <!--<bean id="jmsService" class="service.JmsServiceImpl">-->
+        <!--<property name="connectionFactory" ref="connectionFactory"/>-->
+    <!--</bean>-->
+    <!--<bean id="emailService" class="service.EmailServiceImpl"/>-->
+    <jms:annotation-driven container-factory="jmsListenerContainerFactory"/>
 </beans>
