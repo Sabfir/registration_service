@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Spring boot</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"/>
+    <script type="text/javascript">
+        function doAjax() {
+            /*$.ajax({
+                url: 'registration',
+                /!*data: 'hello Oleg',*!/
+                success: function(data) {
+                    $('#somevalue').html('Hi Oleg!');
+                }
+            });*/
+            var url = 'registrationform';
+            $("#results").load(url);
+        }
+    </script>
+</head>
+<body>
+    <h1 th:text="'Hello from ThymeLeaf'">Hello from Registration Service!</h1>
+
+
+    <form onclick="doAjax()">
+        <button type="submit">Register</button>
+    </form>
+    <span id="results">
+
+    </span>
+</body>
+</html>
