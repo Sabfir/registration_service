@@ -1,3 +1,4 @@
+/*
 package service;
 
 import configuration.SpringTestConfiguration;
@@ -25,4 +26,4 @@ public class JmsServiceImplTest {
         User user = new User("alex_pinta@ukr.net", "123456");
         jmsService.sendMessage(user);
     }
-}
+}*/
