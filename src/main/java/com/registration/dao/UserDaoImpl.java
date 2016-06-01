@@ -20,10 +20,6 @@ import java.util.List;
 @Repository
 public class UserDaoImpl implements UserDao {
 
-//    @Autowired
-//    @Resource(name="hikariDataSource")
-//    private DataSource dataSource;
-
     private JdbcTemplate jdbcTemplateObject;
 
     @Override
@@ -46,6 +42,7 @@ public class UserDaoImpl implements UserDao {
         List <User> userList = jdbcTemplateObject.query(SQL, new UserMapper());
         return userList;
     }
+
 
     @Override
     public void deleteUser(String email){

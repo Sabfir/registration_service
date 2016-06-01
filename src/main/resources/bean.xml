@@ -79,4 +79,14 @@
     <bean id="userDao" class="com.registration.dao.UserDaoImpl">
         <constructor-arg name="jdbcTemplateObject" ref="jdbcTemplateObject"/>
     </bean>
+
+    <!--processing thymeleaf templates-->
+    <bean id="templateResolver" class="org.thymeleaf.templateresolver.ClassLoaderTemplateResolver">
+        <property name="templateMode" value="XHTML"/>
+        <property name="suffix" value=".html"/>
+    </bean>
+    <bean id="templateEngine" class="org.thymeleaf.TemplateEngine">
+        <property name="templateResolver" ref="templateResolver"/>
+    </bean>
+
 </beans>

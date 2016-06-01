@@ -1,4 +1,3 @@
-/*
 package service;
 
 import configuration.SpringTestConfiguration;
@@ -25,4 +24,3 @@ public class EmailServiceImplTest {
         emailService.sendConfirmEmail(user);
     }
 }
-*/

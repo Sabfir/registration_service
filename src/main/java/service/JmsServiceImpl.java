@@ -2,12 +2,10 @@ package service;
 
 import com.google.gson.Gson;
 import core.User;
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
-import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
@@ -30,12 +28,10 @@ public class JmsServiceImpl implements JmsService {
     @Autowired
     private EmailService emailService;
 
-    @Autowired
-    DefaultJmsListenerContainerFactory jmsListenerContainerFactory;
-    @Autowired
-    ApplicationContext context;
 //    @Autowired
-//    private ActiveMQConnectionFactory jmsConnectionFactory;
+//    DefaultJmsListenerContainerFactory jmsListenerContainerFactory;
+//    @Autowired
+//    ApplicationContext context;
 
     public JmsServiceImpl() {
         FileSystemUtils.deleteRecursively(new File("activemq-data"));
