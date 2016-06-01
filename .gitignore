@@ -3,3 +3,7 @@
 .project
 .settings/
 .idea/
+.mvn/
+mvnw
+mvnw.cmd
+registration_service.iml

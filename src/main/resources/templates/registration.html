@@ -5,28 +5,37 @@
     <title>Spring boot</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"/>
     <script type="text/javascript">
-        function doAjax() {
-            /*$.ajax({
-                url: 'registration',
-                /!*data: 'hello Oleg',*!/
-                success: function(data) {
-                    $('#somevalue').html('Hi Oleg!');
-                }
-            });*/
+        function doSignUp() {
+            /*$("#signup").hide().html().fadeIn('slow');*/
+            $("#signup").hide().html();
+
             var url = 'registrationform';
             $("#results").load(url);
+        }
+        function doValidation() {
+            /*$("#signup").hide().html().fadeIn('slow');*/
+            /*$("#signup").hide().html();*/
+            $("#results").hide().html();
+
+            var url = 'velidation';
+            $("#success").load(url, function(response, status, xhr) {
+                if (status == "error") {
+                    var msg = "Sorry but there was an error: ";
+                    $("#error").html(msg + xhr.status + " " + xhr.statusText);
+                }
+            });
         }
     </script>
 </head>
 <body>
-    <h1 th:text="'Hello from ThymeLeaf'">Hello from Registration Service!</h1>
-
-
-    <form onclick="doAjax()">
-        <button type="submit">Register</button>
+    <form id="signup" >
+        <button type="button" onclick="doSignUp()">Sign up</button>
     </form>
-    <span id="results">
+    <div id="results">
 
-    </span>
+    </div>
+    <div id="success">
+
+    </div>
 </body>
 </html>

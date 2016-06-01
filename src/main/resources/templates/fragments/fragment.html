@@ -1,13 +1,24 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" lang="en">
-
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 </head>
 
 <body>
-<div th:fragment="reg">
-    <h1>Fragment invoked</h1>
+<div th:fragment="registration">
+    <h1>Registration</h1>
+
+    <!--<form th:object="${registrationForm}">-->
+    <form>
+        <div>Email: </div>
+        <input type="email" />
+        <div>Password: </div>
+        <input type="password" />
+
+        <button type="button" onclick="doValidation()">Create my account</button>
+    </form>
+    <!--<div id="success">
+
+    </div>-->
 </div>
 </body>
 </html>
