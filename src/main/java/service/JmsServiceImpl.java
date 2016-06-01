@@ -11,6 +11,7 @@ import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileSystemUtils;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -18,6 +19,7 @@ import javax.jms.Session;
 import java.io.File;
 
 @Service
+@Transactional
 public class JmsServiceImpl implements JmsService {
     final String DESTINATION_QUEUE = "email-confirmation";
     final Gson gson = new Gson();
@@ -42,7 +44,6 @@ public class JmsServiceImpl implements JmsService {
     @Override
     @JmsListener(destination = DESTINATION_QUEUE)
     public void receiveMessage(String message, Session session) {
-//        CachingConnectionFactory connectionFactory = new CachingConnectionFactory(jmsConnectionFactory);
         User user = gson.fromJson(message, User.class);
         try {
             if (emailService.isServiceAccessible()) {
@@ -70,8 +71,5 @@ public class JmsServiceImpl implements JmsService {
                 return session.createTextMessage(gson.toJson(user));
             }
         });
-    }
-    public void closeConnectionPool() {
-//        (CachingConnectionFactory)jmsTemplate.getConnectionFactory();
     }
 }

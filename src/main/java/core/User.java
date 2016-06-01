@@ -1,8 +1,19 @@
 package core;
 
+import org.hibernate.validator.constraints.Email;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 public class User {
+    @NotNull @Email(message="Please provide a valid email address")
     private String email;
+    @NotNull
+    @Pattern(regexp = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})",
+            message = "Password has to consist letters, special symbols, number")
     private String password;
+
     private boolean isConfirmed;
 
     public User(String email, String password) {
@@ -11,11 +22,11 @@ public class User {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public boolean isConfirmed() {
-        return isConfirmed;
+        return this.isConfirmed;
     }
 
     public void setIsConfirmed(boolean isConfirmed) {
@@ -23,7 +34,7 @@ public class User {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {

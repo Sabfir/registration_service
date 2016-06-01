@@ -1,42 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:beans="http://www.springframework.org/schema/beans"
-        xmlns:context="http://www.springframework.org/schema/context"
-        xmlns:jms="http://www.springframework.org/schema/jms"
-        xsi:schemaLocation="http://www.springframework.org/schema/jms
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/jms
         http://www.springframework.org/schema/jms/spring-jms-4.1.xsd
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/jdbc
+        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
-    <context:component-scan base-package="service"/>
+    <context:component-scan base-package="service, com.registration.dao"/>
 
-    <bean id="jmsConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory" scope="singleton">
-        <constructor-arg name="targetConnectionFactory" ref="amqConnectionFactory"/>
-        <property name="sessionCacheSize" value="10"/>
-    </bean>
+    <!--<bean id="jmsConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory" scope="singleton">-->
+        <!--<constructor-arg name="targetConnectionFactory" ref="amqConnectionFactory"/>-->
+        <!--<property name="sessionCacheSize" value="10"/>-->
+    <!--</bean>-->
 
     <bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory" scope="singleton">
         <constructor-arg index="0" value="tcp://127.0.0.1:61616"/>
     </bean>
 
     <bean id="jmsListenerContainerFactory" class="org.springframework.jms.config.DefaultJmsListenerContainerFactory" scope="singleton">
-        <property name="connectionFactory" ref="jmsConnectionFactory"/>
+        <property name="connectionFactory" ref="amqConnectionFactory"/>
         <property name="concurrency" value="3-10"/>
         <property name="sessionTransacted" value="true"/>
     </bean>
 
     <!-- Spring JMS Template -->
     <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
-        <property name="connectionFactory" ref="jmsConnectionFactory"/>
+        <property name="connectionFactory" ref="amqConnectionFactory"/>
     </bean>
 
-    <!--<bean autowire="default" id="connection" factory-bean="connectionFactory" factory-method="createConnection"/>-->
-    <!--<bean id="jmsService" class="service.JmsServiceImpl">-->
-        <!--<property name="connectionFactory" ref="connectionFactory"/>-->
-    <!--</bean>-->
-    <!--<bean id="emailService" class="service.EmailServiceImpl"/>-->
     <jms:annotation-driven container-factory="jmsListenerContainerFactory"/>
+
+    <!--<jdbc:embedded-database id="dataSource" type="HSQL" database-name="registration">-->
+        <!--<jdbc:script location="classpath:scripts/createTable.sql" />-->
+    <!--</jdbc:embedded-database>-->
+
+    <bean id="jdbcTemplate"
+          class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate" >
+        <constructor-arg ref="hikariDataSource"/>
+    </bean>
+
+    <!--<bean id="dbcpDataSource" class="org.apache.commons.dbcp2.BasicDataSource"-->
+          <!--destroy-method="close">-->
+        <!--<property name="driverClassName" value="org.hsqldb.jdbcDriver" />-->
+        <!--<property name="url" value="jdbc:hsqldb:mem:dataSource" />-->
+        <!--<property name="username" value="sa" />-->
+        <!--<property name="password" value="" />-->
+    <!--</bean>-->
+
+    <bean id="hikariDataSource" class="com.zaxxer.hikari.HikariDataSource" autowire-candidate="true" destroy-method="close">
+        <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
+        <property name="maximumPoolSize" value="5" />
+        <property name="maxLifetime" value="30000" />
+        <property name="idleTimeout" value="30000" />
+        <property name="jdbcUrl" value="jdbc:hsqldb:mem:dataSource" />
+        <property name="password" value=""/>
+        <property name="username" value="sa"/>
+
+        <property name="dataSourceProperties">
+            <props>
+                <prop key="prepStmtCacheSize">250</prop>
+                <prop key="prepStmtCacheSqlLimit">2048</prop>
+                <prop key="cachePrepStmts">true</prop>
+                <prop key="useServerPrepStmts">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="jdbcTemplateObject" class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg name="dataSource" ref="hikariDataSource" />
+    </bean>
+    <bean id="userDao" class="com.registration.dao.UserDaoImpl">
+        <constructor-arg name="jdbcTemplateObject" ref="jdbcTemplateObject"/>
+    </bean>
 </beans>
