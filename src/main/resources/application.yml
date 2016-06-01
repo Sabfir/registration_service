@@ -1,0 +1,7 @@
+#CUSTOM PROPERTIES
+service.email:
+  emailAddress: forjavatest@ukr.net
+  password: QAZxsw321
+  smtpHost: smtp.ukr.net
+  smtpPort: 465
+
