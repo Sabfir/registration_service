@@ -1,4 +1,3 @@
-/*
 package com.registration.dao;
 
 import configuration.SpringTestConfiguration;
@@ -20,12 +19,6 @@ public class UserDaoImplTest {
 
     @Autowired
     UserDao userDao;
-
-    @Before
-    public void setUp() throws Exception {
-//        userDao = new UserDaoImpl();
-//        userDao.initialize();
-    }
 
     @Test
     public void testCreateUser() throws Exception {
@@ -83,4 +76,4 @@ public class UserDaoImplTest {
         assertEquals(userDao.getUser(EMAIL).isConfirmed(), !NEW_STATUS_CONFIRMATION);
         userDao.truncateTable();
     }
-}*/
+}

@@ -1,16 +1,5 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <title></title>
-</head>
-<body>
-<div th:fragment="success">
+<div>
     <h1>Hello world!</h1>
-    ${email}
-    ${password}
-    <!--<div />-->
-    <!--<div />-->
+    <div th:text="${email}"/>
+    <div th:text="${password}"/>
 </div>
-</body>
-</html>

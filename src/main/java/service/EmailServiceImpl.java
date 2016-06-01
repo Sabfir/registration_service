@@ -53,8 +53,7 @@ public class EmailServiceImpl implements EmailService {
             message.setFrom(new InternetAddress(emailAddress));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
             message.setSubject("Testing Subject");
-            message.setText("Dear Mail Crawler,"
-                    + "\n\n No spam to my email, please!");
+            message.setText("<h1>HELLLLO OLEG</h1>");
 
             message.saveChanges();
             smtpTransport.sendMessage(message, message.getAllRecipients());

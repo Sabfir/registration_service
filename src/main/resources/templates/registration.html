@@ -17,13 +17,23 @@
             /*$("#signup").hide().html();*/
             $("#results").hide().html();
 
+            var email = $("#email").val();
+            var password = $("#password").val();
+            var data = {'email': email, 'password': password};
+
             var url = 'velidation';
-            $("#success").load(url, function(response, status, xhr) {
-                if (status == "error") {
-                    var msg = "Sorry but there was an error: ";
-                    $("#error").html(msg + xhr.status + " " + xhr.statusText);
-                }
-            });
+            $.post(url, data,
+                    function(data, status){
+//                        $("#success").load(data);
+                        $("#success").html(data);
+//                        alert("Data: " + data + "\nStatus: " + status);
+                    });
+//            $("#success").load(url, function(response, status, xhr) {
+//                if (status == "error") {
+//                    var msg = "Sorry but there was an error: ";
+//                    $("#error").html(msg + xhr.status + " " + xhr.statusText);
+//                }
+//            });
         }
     </script>
 </head>
