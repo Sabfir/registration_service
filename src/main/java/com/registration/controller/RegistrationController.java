@@ -33,7 +33,7 @@ public class RegistrationController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String registrationMain() {
-        return "registration";
+          return "registration";
     }
 
     @RequestMapping(value = "/registrationform", method = RequestMethod.GET)

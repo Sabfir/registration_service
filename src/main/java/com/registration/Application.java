@@ -14,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Configuration
 @ComponentScan({ "service, com.registration.dao, com.registration.controller" })
 @EnableJms
-@EnableWebMvc
+//@EnableWebMvc
 @ContextConfiguration(locations = "classpath:bean.xml")
 public class Application {
     public static void main(String[] args) {
