@@ -3,49 +3,42 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Spring boot</title>
+
+    <!-- CSS
+    ============================== -->
+    <link rel="stylesheet" href="../static/normalize.css" />
+    <link rel="stylesheet" href="../static/skeleton.css" />
+
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"/>
     <script type="text/javascript">
-        function doSignUp() {
-            /*$("#signup").hide().html().fadeIn('slow');*/
+        function openRegistrationForm() {
             $("#signup").hide().html();
 
             var url = 'registrationform';
-            $("#results").load(url);
+            $("#htmltext").load(url);
         }
-        function doValidation() {
-            /*$("#signup").hide().html().fadeIn('slow');*/
-            /*$("#signup").hide().html();*/
-            $("#results").hide().html();
-
+        function validateCredentials() {
             var email = $("#email").val();
             var password = $("#password").val();
             var data = {'email': email, 'password': password};
 
             var url = 'velidation';
             $.post(url, data,
-                    function(data, status){
-//                        $("#success").load(data);
-                        $("#success").html(data);
-//                        alert("Data: " + data + "\nStatus: " + status);
-                    });
-//            $("#success").load(url, function(response, status, xhr) {
-//                if (status == "error") {
-//                    var msg = "Sorry but there was an error: ";
-//                    $("#error").html(msg + xhr.status + " " + xhr.statusText);
-//                }
-//            });
+                function(newHtmlText, status){
+                    $("#htmltext").replaceWith(newHtmlText);
+                }
+            );
         }
     </script>
 </head>
 <body>
-    <form id="signup" >
-        <button type="button" onclick="doSignUp()">Sign up</button>
-    </form>
-    <div id="results">
+    <div class="container">
+        <form class="ten columns" id="signup" >
+            <button type="button" onclick="openRegistrationForm()">Sign up</button>
+        </form>
+        <div class="sixteen columns" id="htmltext">
 
-    </div>
-    <div id="success">
-
+        </div>
     </div>
 </body>
 </html>

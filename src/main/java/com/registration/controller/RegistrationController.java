@@ -38,18 +38,14 @@ public class RegistrationController {
 
     @RequestMapping(value = "/registrationform", method = RequestMethod.GET)
     public String registrationForm(Model model) {
-//        context.setVariable("email", "enter email");
-//        context.setVariable("password", "enter password");
-//        templateEngine.process("fragments/fragment :: registration", context, writer);
-
         return "fragments/fragment :: registration";
     }
 
     @RequestMapping(value = "/velidation", method = RequestMethod.POST)
     @ResponseBody
-    public String validate(HttpServletRequest request) {
-        context.setVariable("email", request.getParameter("email"));
-        context.setVariable("password", request.getParameter("password"));
+    public String validateCredentials(HttpServletRequest request) {
+//        context.setVariable("email", request.getParameter("email"));
+//        context.setVariable("password", request.getParameter("password"));
         templateEngine.process("fragments/success", context, writer);
 
         return writer.toString();

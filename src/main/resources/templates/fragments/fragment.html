@@ -7,18 +7,18 @@
 <div th:fragment="registration">
     <h1>Registration</h1>
 
-    <!--<form th:object="${registrationForm}">-->
     <form id="registrationForm">
-        <div>Email: </div>
-        <input id="email" type="email"/>
-        <div>Password: </div>
-        <input id="password" type="password"/>
+        <div class="form-group">
+            <label for="email">email </label>
+            <input id="email" type="email"/>
+        </div>
+        <div class="form-group">
+            <label for="password">pass </label>
+            <input id="password" type="email"/>
+        </div>
 
-        <button type="button" onclick="doValidation()">Create my account</button>
+        <button type="button" onclick="validateCredentials()">Create my account</button>
     </form>
-    <!--<div id="success">
-
-    </div>-->
 </div>
 </body>
 </html>
