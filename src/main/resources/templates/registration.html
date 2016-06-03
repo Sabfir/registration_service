@@ -13,7 +13,6 @@
     <script type="text/javascript">
         function openRegistrationForm() {
             $("#signup").hide().html();
-
             var url = 'registrationform';
             $("#htmltext").load(url);
         }
@@ -24,23 +23,23 @@
 
             var url = 'velidation';
             $.post(url, data,
-                function(newHtmlText, status){
-                    $("#htmltext").replaceWith(newHtmlText);
-                }
+                    function(newHtmlText, status){
+                        $("#htmltext").replaceWith(newHtmlText);
+                    }
             );
         }
     </script>
 </head>
 <body>
-    <div class="container">
-        <form class="eleven columns" id="signup" >
-            <img src="success.gif" alt="success" />
-            <!--<img src="temp1.jpg" alt="success" />-->
-            <button type="button" onclick="openRegistrationForm()">Sign up</button>
-        </form>
-        <div class="sixteen columns" id="htmltext">
+<div class="container">
+    <form class="u-pull-right" id="signup" >
+        <button class="button-primary" type="button" onclick="openRegistrationForm()">Sign up</button>
+    </form>
+    <div class="sixteen columns">
+        <div class="five columns offset-by-two" id="htmltext">
 
         </div>
     </div>
+</div>
 </body>
 </html>
