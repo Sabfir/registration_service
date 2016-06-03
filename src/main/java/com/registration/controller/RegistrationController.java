@@ -45,4 +45,9 @@ public class RegistrationController {
     public String success() {
         return "fragments/success :: success";
     }
+
+    @RequestMapping(value = "/welcomepage", method = RequestMethod.GET)
+    public String welcomePage() {
+        return "fragments/fragment :: welcomepage";
+    }
 }
