@@ -46,8 +46,8 @@ public class RegistrationController {
         return "fragments/success :: success";
     }
 
-    @RequestMapping(value = "/welcomepage", method = RequestMethod.GET)
-    public String welcomePage() {
+    @RequestMapping(value = "/welcomePage/{hashCodeMessage}", method = RequestMethod.GET)
+    public String welcomePage(@PathVariable String hashCodeMessage) {
         return "fragments/fragment :: welcomepage";
     }
 }
