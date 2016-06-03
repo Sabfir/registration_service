@@ -1,17 +1,14 @@
 package com.registration.dao;
 
 import com.registration.dao.helper.SqlInitializer;
-import com.zaxxer.hikari.HikariDataSource;
-import core.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import com.registration.core.User;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.stereotype.Repository;
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.sql.DataSource;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,21 +20,22 @@ public class UserDaoImpl implements UserDao {
     private JdbcTemplate jdbcTemplateObject;
 
     @Override
-    public void createUser(String email, String password) {
+//    @Transactional(propagation = Propagation.MANDATORY)
+    public void createUser(String email, String password) throws DataAccessException {
         String SQL = "insert into users (email, password) values (?, ?)";
         jdbcTemplateObject.update(SQL, email, password);
         //TODO logging ("Created new user email = " + email);
     }
 
     @Override
-    public User getUser(String email) {
+    public User getUser(String email) throws DataAccessException {
         String SQL = "select * from users where email = ?";
         User user = jdbcTemplateObject.queryForObject(SQL, new Object[]{email}, new UserMapper());
         return user;
     }
 
     @Override
-    public List<User> listUsers() {
+    public List<User> listUsers() throws DataAccessException {
         String SQL = "select * from users";
         List <User> userList = jdbcTemplateObject.query(SQL, new UserMapper());
         return userList;
@@ -45,7 +43,7 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    public void deleteUser(String email){
+    public void deleteUser(String email) throws DataAccessException {
         String SQL = "delete from users where email = ?";
         jdbcTemplateObject.update(SQL, email);
         //TODO logging ("Deleted Record with email = " + email );
@@ -53,7 +51,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void truncateTable(){
+    public void truncateTable() throws DataAccessException {
         String SQL = "delete from users";
         jdbcTemplateObject.update(SQL);
         //TODO logging ("Deleted all Record with email = " + email );
@@ -61,7 +59,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void changePassword(String email, String password){
+    public void changePassword(String email, String password) throws DataAccessException {
         String SQL = "update users set password = ? where email = ?";
         jdbcTemplateObject.update(SQL, password, email);
         System.out.println("Changed password for email " + email);
@@ -69,7 +67,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void changeConfirmation(String email, boolean isConfirmed){
+    public void changeConfirmation(String email, boolean isConfirmed) throws DataAccessException {
         String SQL = "update users set is_confirmed = ? where email = ?";
         jdbcTemplateObject.update(SQL, isConfirmed, email);
         System.out.println("Changed password for email " + email);

@@ -4,27 +4,38 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jms="http://www.springframework.org/schema/jms"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/jms
         http://www.springframework.org/schema/jms/spring-jms-4.1.xsd
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/jdbc
         http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
-    <context:component-scan base-package="service, com.registration.dao"/>
+    <!--<context:component-scan base-package="service, com.registration.dao"/>-->
 
     <!--<bean id="jmsConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory" scope="singleton">-->
         <!--<constructor-arg name="targetConnectionFactory" ref="amqConnectionFactory"/>-->
         <!--<property name="sessionCacheSize" value="10"/>-->
     <!--</bean>-->
 
+    <!-- Transaction manager-->
+    <!--<tx:annotation-driven transaction-manager="txManager"/>&lt;!&ndash; a PlatformTransactionManager is still required &ndash;&gt;-->
+    <!--<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
+        <!--&lt;!&ndash; (this dependency is defined somewhere else) &ndash;&gt;-->
+        <!--<property name="dataSource" ref="hikariDataSource"/>-->
+    <!--</bean>-->
+
+
     <bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory" scope="singleton">
         <constructor-arg index="0" value="vm://localhost:61616?create=true"/>
     </bean>
 
-    <bean id="jmsListenerContainerFactory" class="org.springframework.jms.config.DefaultJmsListenerContainerFactory" scope="singleton">
+    <bean id="jmsListenerContainerFactory" class="org.springframework.jms.config.DefaultJmsListenerContainerFactory">
         <property name="connectionFactory" ref="amqConnectionFactory"/>
         <property name="concurrency" value="3-10"/>
         <property name="sessionTransacted" value="true"/>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org", lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<style>
+    body{
+        text-align: center;
+    }
+</style>
+<body>
+    <h1>Thank you for registration!</h1>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Envelope_font_awesome.svg/512px-Envelope_font_awesome.svg.png" width="400" height="400">
+    <p>You have successfully created account in our site.</p>
+    <p>Your email is ${email} and your password ends on ${passwordLastSymbols} </p>
+
+    <p>To confirm your account please click on this link</p>
+    <p><a th:href="@{'http://localhost:8080/confirmRegistration'+${hashCodeRegistration}"></a></p>
+</body>
+</html>

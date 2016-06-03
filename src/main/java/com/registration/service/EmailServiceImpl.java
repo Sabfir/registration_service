@@ -1,15 +1,18 @@
-package service;
+package com.registration.service;
 
+import com.registration.util.TemplateBuilder;
 import com.sun.mail.smtp.*;
-import core.User;
+import com.registration.core.User;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
 
 import javax.annotation.PostConstruct;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
+import java.util.UUID;
 
 @Service
 @ConfigurationProperties(prefix="service.email", locations = "classpath:application.yml")
@@ -48,12 +51,17 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public boolean sendConfirmEmail(User user) {
         boolean returnedCode = false;
+        Context context = new Context();
+        context.setVariable("email", user.getEmail());
+        context.setVariable("password", user.getPassword());
+        context.setVariable("hashCodeRegistration", UUID.randomUUID().toString());
+        String content = TemplateBuilder.proccessTemplate("submitEmailContext", context);
         try {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(emailAddress));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
-            message.setSubject("Testing Subject");
-            message.setText("<h1>HELLLLO OLEG</h1>");
+            message.setSubject("Confirmation of registration in our site");
+            message.setText(content);
 
             message.saveChanges();
             smtpTransport.sendMessage(message, message.getAllRecipients());

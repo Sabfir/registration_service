@@ -1,7 +1,6 @@
-package service;
+package com.registration.service;
 
-import core.User;
-import org.springframework.jms.annotation.JmsListener;
+import com.registration.core.User;
 
 import javax.jms.Session;
 
