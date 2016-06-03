@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org", lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title></title>
+    <meta charset="UTF-8"/>
+    <title>Thank you for registration</title>
 </head>
 <style>
     body{
@@ -11,11 +11,11 @@
 </style>
 <body>
     <h1>Thank you for registration!</h1>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Envelope_font_awesome.svg/512px-Envelope_font_awesome.svg.png" width="400" height="400">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Envelope_font_awesome.svg/512px-Envelope_font_awesome.svg.png" width="400" height="400"/>
     <p>You have successfully created account in our site.</p>
-    <p>Your email is ${email} and your password ends on ${passwordLastSymbols} </p>
+    <p>Your email is <span th:text="${email}" th:remove="tag"></span> and your password ends on <span th:text="${passwordLastSymbols}" th:remove="tag"></span> </p>
 
     <p>To confirm your account please click on this link</p>
-    <p><a th:href="@{'http://localhost:8080/confirmRegistration'+${hashCodeRegistration}"></a></p>
+    <span th:text="'http://localhost:8080/confirmRegistration/'+${hashCodeRegistration}" th:remove="tag"></span>
 </body>
 </html>

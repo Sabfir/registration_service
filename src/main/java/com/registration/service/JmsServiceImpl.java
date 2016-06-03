@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.registration.dao.UserDao;
 import com.registration.core.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
@@ -19,6 +21,7 @@ import javax.jms.Session;
 import java.io.File;
 
 @Service
+@Configurable
 @Transactional
 public class JmsServiceImpl implements JmsService {
     final String DESTINATION_QUEUE = "email-confirmation";
@@ -30,13 +33,8 @@ public class JmsServiceImpl implements JmsService {
     @Autowired
     private EmailService emailService;
 
-    @Autowired
-    UserDao userDao;
-
 //    @Autowired
-//    DefaultJmsListenerContainerFactory jmsListenerContainerFactory;
-//    @Autowired
-//    ApplicationContext context;
+//    UserDao userDao;
 
     public JmsServiceImpl() {
         FileSystemUtils.deleteRecursively(new File("activemq-data"));
@@ -50,7 +48,7 @@ public class JmsServiceImpl implements JmsService {
         User user = gson.fromJson(message, User.class);
         try {
             if (emailService.isServiceAccessible()) {
-                userDao.createUser(user.getEmail(), user.getPassword());
+                //userDao.createUser(user.getEmail(), user.getPassword());
                 if (emailService.sendConfirmEmail(user)) {
                     session.commit();
                 } else {
