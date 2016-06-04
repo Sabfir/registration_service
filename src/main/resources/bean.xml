@@ -20,9 +20,8 @@
     <context:annotation-config />
 
     <!-- Transaction manager-->
-    <tx:annotation-driven transaction-manager="txManager" mode="proxy"/><!-- a PlatformTransactionManager is still required -->
+    <tx:annotation-driven transaction-manager="txManager" mode="proxy"/>
     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <!-- (this dependency is defined somewhere else) -->
         <property name="dataSource" ref="hikariDataSource"/>
     </bean>
 
@@ -80,5 +79,4 @@
     <bean id="templateEngine" class="org.thymeleaf.TemplateEngine" primary="true">
         <property name="templateResolver" ref="templateResolver"/>
     </bean>
-
 </beans>

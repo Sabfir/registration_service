@@ -21,7 +21,7 @@ public class RegistrationController {
     @Autowired
     private JmsService jmsService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = {"/registration", "/"}, method = RequestMethod.GET)
     public String registrationMain() {
         return "index";
     }

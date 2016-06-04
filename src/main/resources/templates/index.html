@@ -4,8 +4,6 @@
     <meta charset="UTF-8"/>
     <title>Spring boot</title>
 
-    <!-- CSS
-    ============================== -->
     <link rel="stylesheet" href="normalize.css" />
     <link rel="stylesheet" href="skeleton.css" />
 
@@ -32,34 +30,15 @@
     </script>
 </head>
 <body>
-<div class="container">
-    <form class="u-pull-right" id="signup" >
-        <button class="button-primary" type="button" onclick="openRegistrationForm()">Sign up</button>
-    </form>
-    <div class="sixteen columns">
-        <div class="nine columns offset-by-two" id="htmltext">
+    <div class="container">
+        <form class="u-pull-right" id="signup" >
+            <button class="button-primary" type="button" onclick="openRegistrationForm()">Sign up</button>
+        </form>
+        <div class="sixteen columns">
+            <div class="nine columns offset-by-two" id="htmltext">
 
+            </div>
         </div>
     </div>
-
-
-    <!--<div th:if="${showRegistration}">
-        <h1>Registration</h1>
-
-        <form th:object="${user}">
-            <div class="form-group">
-                <label for="email">email </label>
-                <input id="email" type="email" />
-            </div>
-            <div class="form-group">
-                <label for="password">pass </label>
-                <input id="password" type="password" th:field="*{password}"  />
-            </div>
-
-            <button class="button-primary" type="button" onclick="validateCredentials()">Create my account</button>
-        </form>
-    </div>-->
-
-</div>
 </body>
 </html>
