@@ -33,7 +33,7 @@ public class JmsServiceImpl implements JmsService {
     private EmailService emailService;
 
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
 
     public JmsServiceImpl() {
         FileSystemUtils.deleteRecursively(new File("activemq-data"));
@@ -59,11 +59,11 @@ public class JmsServiceImpl implements JmsService {
         } catch (JMSException e) {
             //TODO logging can\'t rollback
         } finally {
-            try {
-                session.close();
-            } catch (JMSException e) {
-                //e.printStackTrace();
-            }
+//            try {
+//                session.close();
+//            } catch (JMSException e) {
+//                //e.printStackTrace();
+//            }
         }
 
     }
@@ -74,5 +74,15 @@ public class JmsServiceImpl implements JmsService {
                 return session.createTextMessage(gson.toJson(user));
             }
         });
+    }
+
+    @Override
+   public void setEmailService(EmailService emailService) {
+        this.emailService = emailService;
+    }
+
+    @Override
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
 }
