@@ -2,6 +2,7 @@ package com.registration.dao;
 
 import com.registration.dao.helper.SqlInitializer;
 import com.registration.core.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,10 +19,11 @@ import java.util.List;
 @Repository
 public class UserDaoImpl implements UserDao {
 
+    @Autowired
     private JdbcTemplate jdbcTemplateObject;
 
     @Override
-//    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional(propagation = Propagation.MANDATORY)
     public void createUser(String email, String password) throws DataAccessException {
         String SQL = "insert into users (email, password) values (?, ?)";
         jdbcTemplateObject.update(SQL, email, password);
@@ -82,9 +85,8 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
-    public UserDaoImpl(JdbcTemplate jdbcTemplateObject) {
-        this.jdbcTemplateObject = jdbcTemplateObject;
-
+    @PostConstruct
+    public void initialize() {
         try {
             final Connection connection = this.jdbcTemplateObject.getDataSource().getConnection();
             SqlInitializer.initializeDatabase(connection);
