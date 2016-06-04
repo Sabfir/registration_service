@@ -8,7 +8,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 
 @EnableAutoConfiguration
-@ComponentScan({ "service, com.registration.dao, com.registration.controller" })
+@ComponentScan({ "com.registration.service, com.registration.dao, com.registration.controller" })
 @Configuration
 @ImportResource("classpath:bean.xml")
 @TestPropertySource(locations="classpath:application.yml")

@@ -1,8 +1,7 @@
 package com.registration.dao;
 
 import configuration.SpringTestConfiguration;
-import core.User;
-import org.junit.Before;
+import com.registration.core.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

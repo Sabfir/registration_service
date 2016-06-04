@@ -1,8 +1,7 @@
-package service;
+package com.registration.service;
 
-import core.User;
+import com.registration.core.User;
 
-import javax.jms.Session;
 import javax.mail.NoSuchProviderException;
 
 public interface EmailService {

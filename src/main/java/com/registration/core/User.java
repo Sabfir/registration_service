@@ -1,4 +1,4 @@
-package core;
+package com.registration.core;
 
 import org.hibernate.validator.constraints.Email;
 

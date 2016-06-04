@@ -13,7 +13,8 @@
     <script type="text/javascript">
         function openRegistrationForm() {
             $("#signup").hide().html();
-            var url = 'registrationform';
+
+            var url = 'registrationForm';
             $("#htmltext").load(url);
         }
         function validateCredentials() {
@@ -21,7 +22,7 @@
             var password = $("#password").val();
             var data = {'email': email, 'password': password};
 
-            var url = 'velidation';
+            var url = 'validation';
             $.post(url, data,
                     function(newHtmlText, status){
                         $("#htmltext").replaceWith(newHtmlText);

@@ -1,14 +1,18 @@
-package service;
+package com.registration.service;
 
 import com.google.gson.Gson;
-import core.User;
+import com.registration.dao.UserDao;
+import com.registration.core.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jms.annotation.JmsListener;
-import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileSystemUtils;
 import javax.jms.JMSException;
@@ -17,6 +21,7 @@ import javax.jms.Session;
 import java.io.File;
 
 @Service
+@Configurable
 @Transactional
 public class JmsServiceImpl implements JmsService {
     final String DESTINATION_QUEUE = "email-confirmation";
@@ -29,9 +34,7 @@ public class JmsServiceImpl implements JmsService {
     private EmailService emailService;
 
 //    @Autowired
-//    DefaultJmsListenerContainerFactory jmsListenerContainerFactory;
-//    @Autowired
-//    ApplicationContext context;
+//    UserDao userDao;
 
     public JmsServiceImpl() {
         FileSystemUtils.deleteRecursively(new File("activemq-data"));
@@ -39,10 +42,13 @@ public class JmsServiceImpl implements JmsService {
 
     @Override
     @JmsListener(destination = DESTINATION_QUEUE)
+//    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED,
+//                    rollbackFor = DataAccessException.class)
     public void receiveMessage(String message, Session session) {
         User user = gson.fromJson(message, User.class);
         try {
             if (emailService.isServiceAccessible()) {
+                //userDao.createUser(user.getEmail(), user.getPassword());
                 if (emailService.sendConfirmEmail(user)) {
                     session.commit();
                 } else {

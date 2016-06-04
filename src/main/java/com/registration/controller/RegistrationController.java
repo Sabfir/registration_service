@@ -1,23 +1,15 @@
 package com.registration.controller;
 
-import com.google.gson.Gson;
-import com.registration.model.RegistrationForm;
-import core.User;
+import com.registration.core.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-import service.JmsService;
+import com.registration.service.JmsService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import javax.websocket.server.PathParam;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.StringWriter;
 
 @Controller
@@ -36,18 +28,16 @@ public class RegistrationController {
           return "registration";
     }
 
-    @RequestMapping(value = "/registrationform", method = RequestMethod.GET)
+    @RequestMapping(value = "/registrationForm", method = RequestMethod.GET)
     public String registrationForm(Model model) {
         return "fragments/fragment :: registration";
     }
 
-    @RequestMapping(value = "/velidation", method = RequestMethod.POST)
+    @RequestMapping(value = "/validation", method = RequestMethod.POST)
     @ResponseBody
     public String validateCredentials(HttpServletRequest request) {
-//        context.setVariable("email", request.getParameter("email"));
-//        context.setVariable("password", request.getParameter("password"));
+        jmsService.sendMessage(new User(request.getParameter("email"), request.getParameter("password")));
         templateEngine.process("fragments/success", context, writer);
-
         return writer.toString();
     }
 
@@ -56,8 +46,8 @@ public class RegistrationController {
         return "fragments/success :: success";
     }
 
-    @RequestMapping(value = "/welcomepage", method = RequestMethod.GET)
-    public String welcomePage() {
+    @RequestMapping(value = "/welcomePage/{hashCodeMessage}", method = RequestMethod.GET)
+    public String welcomePage(@PathVariable String hashCodeMessage) {
         return "fragments/fragment :: welcomepage";
     }
 }
