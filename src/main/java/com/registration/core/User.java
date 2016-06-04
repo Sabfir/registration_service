@@ -6,14 +6,16 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 public class User {
-    @NotNull @Email(message="Please provide a valid email address")
+    @NotNull @Email
     private String email;
     @NotNull
-    @Pattern(regexp = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})",
-            message = "Password has to consist letters, special symbols, number")
+    @Pattern(regexp = ".*[\\d]+.*[\\d]+.*",
+            message = "Invalid password! It should have at least two digits.")
     private String password;
 
     private boolean isConfirmed;
+
+    public User() {}
 
     public User(String email, String password) {
         this.email = email;
@@ -22,6 +24,10 @@ public class User {
 
     public String getEmail() {
         return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public boolean isConfirmed() {

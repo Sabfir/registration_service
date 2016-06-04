@@ -23,7 +23,7 @@ public class UserDaoImpl implements UserDao {
     private JdbcTemplate jdbcTemplateObject;
 
     @Override
-    @Transactional(propagation = Propagation.MANDATORY)
+//    @Transactional(propagation = Propagation.MANDATORY)
     public void createUser(String email, String password) throws DataAccessException {
         String SQL = "insert into users (email, password) values (?, ?)";
         jdbcTemplateObject.update(SQL, email, password);
@@ -50,7 +50,6 @@ public class UserDaoImpl implements UserDao {
         String SQL = "delete from users where email = ?";
         jdbcTemplateObject.update(SQL, email);
         //TODO logging ("Deleted Record with email = " + email );
-        return;
     }
 
     @Override
@@ -58,7 +57,6 @@ public class UserDaoImpl implements UserDao {
         String SQL = "delete from users";
         jdbcTemplateObject.update(SQL);
         //TODO logging ("Deleted all Record with email = " + email );
-        return;
     }
 
     @Override
@@ -66,7 +64,6 @@ public class UserDaoImpl implements UserDao {
         String SQL = "update users set password = ? where email = ?";
         jdbcTemplateObject.update(SQL, password, email);
         System.out.println("Changed password for email " + email);
-        return;
     }
 
     @Override
@@ -74,7 +71,6 @@ public class UserDaoImpl implements UserDao {
         String SQL = "update users set is_confirmed = ? where email = ?";
         jdbcTemplateObject.update(SQL, isConfirmed, email);
         System.out.println("Changed password for email " + email);
-        return;
     }
 
     private class UserMapper implements RowMapper<User> {

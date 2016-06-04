@@ -4,8 +4,6 @@
     <meta charset="UTF-8"/>
     <title>Spring boot</title>
 
-    <!-- CSS
-    ============================== -->
     <link rel="stylesheet" href="normalize.css" />
     <link rel="stylesheet" href="skeleton.css" />
 
@@ -24,23 +22,23 @@
 
             var url = 'validation';
             $.post(url, data,
-                    function(newHtmlText, status){
-                        $("#htmltext").replaceWith(newHtmlText);
-                    }
+                function(newHtmlText, status){
+                    $("#htmltext").html(newHtmlText);
+                }
             );
         }
     </script>
 </head>
 <body>
-<div class="container">
-    <form class="u-pull-right" id="signup" >
-        <button class="button-primary" type="button" onclick="openRegistrationForm()">Sign up</button>
-    </form>
-    <div class="sixteen columns">
-        <div class="five columns offset-by-two" id="htmltext">
+    <div class="container">
+        <form class="u-pull-right" id="signup" >
+            <button class="button-primary" type="button" onclick="openRegistrationForm()">Sign up</button>
+        </form>
+        <div class="sixteen columns">
+            <div class="nine columns offset-by-two" id="htmltext">
 
+            </div>
         </div>
     </div>
-</div>
 </body>
 </html>

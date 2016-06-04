@@ -19,15 +19,9 @@
     <context:component-scan base-package="com.registration.service, com.registration.dao, com.registration.controller, com.registration.util"/>
     <context:annotation-config />
 
-    <!--<bean id="jmsConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory" scope="singleton">-->
-        <!--<constructor-arg name="targetConnectionFactory" ref="amqConnectionFactory"/>-->
-        <!--<property name="sessionCacheSize" value="10"/>-->
-    <!--</bean>-->
-
     <!-- Transaction manager-->
-    <tx:annotation-driven transaction-manager="txManager" mode="proxy"/><!-- a PlatformTransactionManager is still required -->
+    <tx:annotation-driven transaction-manager="txManager" mode="proxy"/>
     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <!-- (this dependency is defined somewhere else) -->
         <property name="dataSource" ref="hikariDataSource"/>
     </bean>
 
@@ -49,29 +43,17 @@
 
     <jms:annotation-driven container-factory="jmsListenerContainerFactory"/>
 
-    <!--<jdbc:embedded-database id="dataSource" type="HSQL" database-name="registration">-->
-        <!--<jdbc:script location="classpath:scripts/createTable.sql" />-->
-    <!--</jdbc:embedded-database>-->
-
     <bean id="jdbcTemplate"
           class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate" >
         <constructor-arg ref="hikariDataSource"/>
     </bean>
-
-    <!--<bean id="dbcpDataSource" class="org.apache.commons.dbcp2.BasicDataSource"-->
-          <!--destroy-method="close">-->
-        <!--<property name="driverClassName" value="org.hsqldb.jdbcDriver" />-->
-        <!--<property name="url" value="jdbc:hsqldb:mem:dataSource" />-->
-        <!--<property name="username" value="sa" />-->
-        <!--<property name="password" value="" />-->
-    <!--</bean>-->
 
     <bean id="hikariDataSource" class="com.zaxxer.hikari.HikariDataSource" autowire-candidate="true" destroy-method="close">
         <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
         <property name="maximumPoolSize" value="5" />
         <property name="maxLifetime" value="30000" />
         <property name="idleTimeout" value="30000" />
-        <property name="jdbcUrl" value="jdbc:hsqldb:mem:dataSource" />
+        <property name="jdbcUrl" value="jdbc:hsqldb:mem:registration" />
         <property name="password" value=""/>
         <property name="username" value="sa"/>
 
@@ -97,5 +79,4 @@
     <bean id="templateEngine" class="org.thymeleaf.TemplateEngine" primary="true">
         <property name="templateResolver" ref="templateResolver"/>
     </bean>
-
 </beans>

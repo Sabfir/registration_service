@@ -1,0 +1,16 @@
+<div>
+    <h1>Registration</h1>
+    <form th:object="${user}" method="post">
+        <div class="form-group">
+            <label for="email">email </label>
+            <input id="email" name="email" type="text" th:field="*{email}" />
+            <span style="color:red;" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error message</span>
+        </div>
+        <div class="form-group">
+            <label for="password">pass </label>
+            <input id="password" name="password" type="password" th:field="*{password}" />
+            <span style="color:red;" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error message</span>
+        </div>
+        <button class="button-primary" type="button" onclick="validateCredentials()">Create my account</button>
+    </form>
+</div>
