@@ -15,6 +15,11 @@ public class User {
 
     private boolean isConfirmed;
 
+    public User() {
+        this.email = "email@gmail.com";
+        this.password = "password123";
+    }
+
     public User(String email, String password) {
         this.email = email;
         this.password = password;
