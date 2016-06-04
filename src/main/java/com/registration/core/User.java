@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 public class User {
-    @NotNull @Email(message="Please provide a valid email address")
+    /*@NotNull*/ @Email/*(message="Please provide a valid email address")*/
     private String email;
     @NotNull
     @Pattern(regexp = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})",
