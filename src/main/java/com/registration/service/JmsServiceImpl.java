@@ -41,8 +41,8 @@ public class JmsServiceImpl implements JmsService {
 
     @Override
     @JmsListener(destination = DESTINATION_QUEUE)
-    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED,
-                    rollbackFor = DataAccessException.class)
+//    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED,
+//                    rollbackFor = DataAccessException.class)
     public void receiveMessage(String message, Session session) {
         User user = gson.fromJson(message, User.class);
         try {
@@ -59,14 +59,16 @@ public class JmsServiceImpl implements JmsService {
         } catch (JMSException e) {
             //TODO logging can\'t rollback
         } finally {
-            try {
-                session.close();
-            } catch (JMSException e) {
-                //e.printStackTrace();
-            }
+//            try {
+//                if (session != null) {
+//                    session.close();
+//                }
+//            } catch (JMSException e) {
+//                //e.printStackTrace();
+//            }
         }
-
     }
+
     @Override
     public void sendMessage(final User user) {
         this.jmsTemplate.send(DESTINATION_QUEUE, new MessageCreator() {
