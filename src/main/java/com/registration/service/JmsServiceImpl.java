@@ -5,7 +5,6 @@ import com.registration.dao.UserDao;
 import com.registration.core.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
@@ -33,8 +32,8 @@ public class JmsServiceImpl implements JmsService {
     @Autowired
     private EmailService emailService;
 
-//    @Autowired
-//    UserDao userDao;
+    @Autowired
+    UserDao userDao;
 
     public JmsServiceImpl() {
         FileSystemUtils.deleteRecursively(new File("activemq-data"));
@@ -42,19 +41,21 @@ public class JmsServiceImpl implements JmsService {
 
     @Override
     @JmsListener(destination = DESTINATION_QUEUE)
-//    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED,
-//                    rollbackFor = DataAccessException.class)
+    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED,
+                    rollbackFor = DataAccessException.class)
     public void receiveMessage(String message, Session session) {
         User user = gson.fromJson(message, User.class);
         try {
             if (emailService.isServiceAccessible()) {
-                //userDao.createUser(user.getEmail(), user.getPassword());
+                userDao.createUser(user.getEmail(), user.getPassword());
                 if (emailService.sendConfirmEmail(user)) {
                     session.commit();
                 } else {
                     session.rollback();
                 }
             }
+        } catch (DataAccessException e) {
+            //TODO logging can\'t rollback
         } catch (JMSException e) {
             //TODO logging can\'t rollback
         } finally {
