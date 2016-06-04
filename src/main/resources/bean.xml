@@ -4,7 +4,6 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jms="http://www.springframework.org/schema/jms"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/jms
         http://www.springframework.org/schema/jms/spring-jms-4.1.xsd
@@ -15,17 +14,10 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/jdbc
-        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
-
-    <!--<mvc:annotation-driven />-->
+        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
     <context:component-scan base-package="com.registration.service, com.registration.dao, com.registration.controller, com.registration.util"/>
     <context:annotation-config />
-
-    <!--<bean id="jmsConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory" scope="singleton">-->
-        <!--<constructor-arg name="targetConnectionFactory" ref="amqConnectionFactory"/>-->
-        <!--<property name="sessionCacheSize" value="10"/>-->
-    <!--</bean>-->
 
     <!-- Transaction manager-->
     <tx:annotation-driven transaction-manager="txManager" mode="proxy"/><!-- a PlatformTransactionManager is still required -->
@@ -52,22 +44,10 @@
 
     <jms:annotation-driven container-factory="jmsListenerContainerFactory"/>
 
-    <!--<jdbc:embedded-database id="dataSource" type="HSQL" database-name="registration">-->
-        <!--<jdbc:script location="classpath:scripts/createTable.sql" />-->
-    <!--</jdbc:embedded-database>-->
-
     <bean id="jdbcTemplate"
           class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate" >
         <constructor-arg ref="hikariDataSource"/>
     </bean>
-
-    <!--<bean id="dbcpDataSource" class="org.apache.commons.dbcp2.BasicDataSource"-->
-          <!--destroy-method="close">-->
-        <!--<property name="driverClassName" value="org.hsqldb.jdbcDriver" />-->
-        <!--<property name="url" value="jdbc:hsqldb:mem:dataSource" />-->
-        <!--<property name="username" value="sa" />-->
-        <!--<property name="password" value="" />-->
-    <!--</bean>-->
 
     <bean id="hikariDataSource" class="com.zaxxer.hikari.HikariDataSource" autowire-candidate="true" destroy-method="close">
         <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>

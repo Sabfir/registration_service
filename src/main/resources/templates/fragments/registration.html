@@ -23,14 +23,15 @@
     <!--<form>-->
         <div class="form-group">
             <label for="email">email </label>
-            <input id="email" type="email" />
+            <input id="email" name="email" type="text" th:field="*{email}" />
+            <span style="color:red;" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error message</span>
             <!--<span style="color:red;" th:text="${emailerror}"/>-->
         </div>
         <div class="form-group">
             <label for="password">pass </label>
             <!--<input id="password" type="password" th:field="*{password}" />-->
             <input id="password" name="password" type="password" th:field="*{password}" />
-            <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error message</td>
+            <span style="color:red;" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error message</span>
             <!--<input id="password" name="password" type="password" th:value="${user.password}" />-->
 
             <!--th:errorclass="fieldError"-->

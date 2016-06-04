@@ -24,9 +24,9 @@
 
             var url = 'validation';
             $.post(url, data,
-                    function(newHtmlText, status){
-                        $("#htmltext").replaceWith(newHtmlText);
-                    }
+                function(newHtmlText, status){
+                    $("#htmltext").html(newHtmlText);
+                }
             );
         }
     </script>
@@ -37,7 +37,7 @@
         <button class="button-primary" type="button" onclick="openRegistrationForm()">Sign up</button>
     </form>
     <div class="sixteen columns">
-        <div class="five columns offset-by-two" id="htmltext">
+        <div class="nine columns offset-by-two" id="htmltext">
 
         </div>
     </div>

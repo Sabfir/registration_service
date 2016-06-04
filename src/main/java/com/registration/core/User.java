@@ -10,15 +10,12 @@ public class User {
     private String email;
     @NotNull
     @Pattern(regexp = ".*[\\d]+.*[\\d]+.*",
-            message = "Password has to consist letters, special symbols, number")
+            message = "Invalid password! It should have at least two digist.")
     private String password;
 
     private boolean isConfirmed;
 
-    public User() {
-        this.email = "email@gmail.com";
-        this.password = "password123";
-    }
+    public User() {}
 
     public User(String email, String password) {
         this.email = email;
@@ -27,6 +24,10 @@ public class User {
 
     public String getEmail() {
         return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public boolean isConfirmed() {
