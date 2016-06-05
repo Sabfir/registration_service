@@ -1,5 +1,6 @@
 package com.registration.service;
 
+import com.registration.util.StringEncryptor;
 import com.sun.mail.smtp.*;
 import com.registration.core.User;
 import org.apache.commons.lang3.StringUtils;
@@ -14,7 +15,6 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
-import java.util.UUID;
 
 @Service
 @Configurable
@@ -30,8 +30,10 @@ public class EmailServiceImpl implements EmailService {
 
     @Autowired
     private TemplateEngine templateEngine;
+    @Autowired
+    StringEncryptor stringEncryptor;
 
-    private EmailServiceImpl() {}
+    public EmailServiceImpl() {}
 
     @Override
     @PostConstruct
@@ -65,7 +67,7 @@ public class EmailServiceImpl implements EmailService {
         Context context = new Context();
         context.setVariable("email", user.getEmail());
         context.setVariable("passwordLastSymbols",  lastPasswordSymbol);
-        context.setVariable("hashCodeRegistration", UUID.randomUUID().toString());
+        context.setVariable("hashCodeRegistration", stringEncryptor.encrypt(user.getEmail()));
         String content = templateEngine.process("submitEmailContext", context);
         try {
             MimeMessage message = new MimeMessage(session);
@@ -113,7 +115,18 @@ public class EmailServiceImpl implements EmailService {
         return serviceStatus;
     }
 
+    @Override
     public void setTransport(SMTPSSLTransport smtpTransport) {
         this.transport = smtpTransport;
+    }
+
+    @Override
+    public void setTemplateEngine(TemplateEngine templateEngine) {
+        this.templateEngine = templateEngine;
+    }
+
+    @Override
+    public void setStringEncryptor(StringEncryptor stringEncryptor) {
+        this.stringEncryptor = stringEncryptor;
     }
 }

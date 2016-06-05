@@ -11,7 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-@SpringBootApplication(scanBasePackages = { "com.registration.service, com.registration.dao, com.registration.controller, com.registration.util" })
+@SpringBootApplication(scanBasePackages = { "com.registration" })
 //@EnableTransactionManagement
 @EnableJms
 @ContextConfiguration(locations = "classpath:bean.xml")

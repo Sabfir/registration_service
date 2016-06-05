@@ -10,5 +10,5 @@ public interface EndPoints {
     String BASE_URL = "/registration";
     String REGISTRATION_FORM = BASE_URL + "/registrationForm";
     String VALIDATION = BASE_URL + "/validation";
-    String WELCOME_PAGE = BASE_URL + "/welcomePage/{hashCodeMessage}";
+    String WELCOME_PAGE = BASE_URL + "/confirm/{hashCodeMessage}";
 }

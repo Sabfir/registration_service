@@ -35,7 +35,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public void createUser(String email, String password) throws DataAccessException {
-        String SQL = "insert into users (email, password) values (?, ?)";
+        final String SQL = "insert into users (email, password) values (?, ?)";
         jdbcTemplateObject.update(SQL, email, password);
         //TODO logging ("Created new user email = " + email);
     }
@@ -46,7 +46,7 @@ public class UserDaoImpl implements UserDao {
      */
     @Override
     public User getUser(String email) throws DataAccessException {
-        String SQL = "select * from users where email = ?";
+        final String SQL = "select * from users where email = ?";
         User user = jdbcTemplateObject.queryForObject(SQL, new Object[]{email}, new UserMapper());
         return user;
     }
@@ -57,7 +57,7 @@ public class UserDaoImpl implements UserDao {
      */
     @Override
     public List<User> listUsers() throws DataAccessException {
-        String SQL = "select * from users";
+        final String SQL = "select * from users";
         List <User> userList = jdbcTemplateObject.query(SQL, new UserMapper());
         return userList;
     }
@@ -68,7 +68,7 @@ public class UserDaoImpl implements UserDao {
      */
     @Override
     public void deleteUser(String email) throws DataAccessException {
-        String SQL = "delete from users where email = ?";
+        final String SQL = "delete from users where email = ?";
         jdbcTemplateObject.update(SQL, email);
         //TODO logging ("Deleted Record with email = " + email );
     }
@@ -78,7 +78,7 @@ public class UserDaoImpl implements UserDao {
      */
     @Override
     public void truncateTable() throws DataAccessException {
-        String SQL = "delete from users";
+        final String SQL = "delete from users";
         jdbcTemplateObject.update(SQL);
         //TODO logging ("Deleted all Record with email = " + email );
     }
@@ -90,7 +90,7 @@ public class UserDaoImpl implements UserDao {
      */
     @Override
     public void changePassword(String email, String password) throws DataAccessException {
-        String SQL = "update users set password = ? where email = ?";
+        final String SQL = "update users set password = ? where email = ?";
         jdbcTemplateObject.update(SQL, password, email);
         System.out.println("Changed password for email " + email);
     }
@@ -102,7 +102,7 @@ public class UserDaoImpl implements UserDao {
      */
     @Override
     public void changeConfirmation(String email, boolean isConfirmed) throws DataAccessException {
-        String SQL = "update users set is_confirmed = ? where email = ?";
+        final String SQL = "update users set is_confirmed = ? where email = ?";
         jdbcTemplateObject.update(SQL, isConfirmed, email);
         System.out.println("Changed password for email " + email);
     }
