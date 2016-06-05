@@ -17,7 +17,7 @@ public class User {
 
     @Pattern.List({
         @Pattern(regexp = ".*[\\d]+.*[\\d]+.*", message = "Invalid password! It should have at least two digits."),
-        @Pattern(regexp = ".*[\\!]+.*", message = "Invalid password! It should contain symbol \'!\'."),
+        @Pattern(regexp = ".*[\\!]+.*", message = "Invalid password! It should contain symbol \"!\"."),
     })
     private String password;
 

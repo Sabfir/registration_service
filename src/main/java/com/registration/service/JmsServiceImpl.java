@@ -19,6 +19,12 @@ import javax.jms.Message;
 import javax.jms.Session;
 import java.io.File;
 
+/**
+ * The JmsServiceImpl class implements java JmsService.
+ * You can receive and send message using it
+ *
+ * @author  Alex Pinta, Oleh Pinta
+ */
 @Service
 @Configurable
 @Transactional
@@ -39,6 +45,10 @@ public class JmsServiceImpl implements JmsService {
         FileSystemUtils.deleteRecursively(new File("activemq-data"));
     }
 
+    /**
+     * This method is used to receive email confirmation.
+     * It commits session in case of success
+     */
     @Override
     @JmsListener(destination = DESTINATION_QUEUE)
     @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED,
@@ -61,6 +71,10 @@ public class JmsServiceImpl implements JmsService {
         }
     }
 
+    /**
+     * This method is used to send mail.
+     * It gets user as an attribute, prepare and send message through mail
+     */
     @Override
     public void sendMessage(final User user) {
         this.jmsTemplate.send(DESTINATION_QUEUE, new MessageCreator() {

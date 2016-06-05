@@ -6,7 +6,6 @@ import org.springframework.dao.DataAccessException;
 import java.util.List;
 
 public interface UserDao {
-//    void initialize();
 
     void createUser(String email, String password) throws DataAccessException;
 

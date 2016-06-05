@@ -16,6 +16,12 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
+/**
+ * The EmailServiceImpl class implements send email service.
+ * You can prepare mail service and send mail using it
+ *
+ * @author  Alex Pinta, Oleh Pinta
+ */
 @Service
 @Configurable
 @ConfigurationProperties(prefix="service.email", locations = "classpath:application.yml")
@@ -35,6 +41,10 @@ public class EmailServiceImpl implements EmailService {
 
     public EmailServiceImpl() {}
 
+    /**
+     * This method is used to prepare service.
+     * It gets properties, does connection and sets reportsuccess
+     */
     @Override
     @PostConstruct
     public void prepareService() {
@@ -55,6 +65,11 @@ public class EmailServiceImpl implements EmailService {
         transport.setReportSuccess(true);
     }
 
+    /**
+     * This method is used to send email confirmation.
+     * It gets user as an attribute, prepare and send confirmation request
+     * It returns true in case of success
+     */
     @Override
     public boolean sendConfirmEmail(User user) {
         final int COUNT_RENDERED_SYMBOLS = 2;

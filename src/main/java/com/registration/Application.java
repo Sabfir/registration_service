@@ -11,6 +11,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+/**
+ * Spring Boot main class
+ *
+ */
 @SpringBootApplication(scanBasePackages = { "com.registration" })
 //@EnableTransactionManagement
 @EnableJms
