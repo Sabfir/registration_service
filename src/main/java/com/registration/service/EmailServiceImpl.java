@@ -4,6 +4,7 @@ import com.registration.util.StringEncryptor;
 import com.sun.mail.smtp.*;
 import com.registration.core.User;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -26,6 +27,7 @@ import java.util.Properties;
 @Configurable
 @ConfigurationProperties(prefix="service.email", locations = "classpath:application.yml")
 public class EmailServiceImpl implements EmailService {
+    final static Logger logger = Logger.getLogger(EmailServiceImpl.class);
     private String emailAddress;
     private String password;
     private String smtpHost;
@@ -58,9 +60,10 @@ public class EmailServiceImpl implements EmailService {
         try {
             transport = (SMTPSSLTransport)session.getTransport("smtps");
             transport.connect(smtpHost, emailAddress, password);
+            logger.info("Accessed to provider successfully");
         } catch (MessagingException e) {
             serviceStatus = false;
-            //TODO logging inner problem with an access to provider
+            logger.error("Logging inner problem with an access to provider", e);
         }
         transport.setReportSuccess(true);
     }
@@ -95,16 +98,14 @@ public class EmailServiceImpl implements EmailService {
             message.saveChanges();
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
+            logger.info("Message sent successfully");
         } catch(SMTPSendFailedException e) {
             if (e.getReturnCode() == EMAIL_RESPONSE_OK) {
                 returnedCode = true;
-                //TODO logging
-
-            } else {
-                //TODO logging
             }
+            logger.error("Send failed with the exception", e);
         } catch (Exception e) {
-            //TODO logging
+            logger.error("Unknown error during sending email", e);
         }
         return returnedCode;
     }

@@ -3,6 +3,7 @@ package com.registration.service;
 import com.google.gson.Gson;
 import com.registration.dao.UserDao;
 import com.registration.core.User;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.dao.DataAccessException;
@@ -29,6 +30,7 @@ import java.io.File;
 @Configurable
 @Transactional
 public class JmsServiceImpl implements JmsService {
+    final static Logger logger = Logger.getLogger(JmsServiceImpl.class);
     final String DESTINATION_QUEUE = "email-confirmation";
     final Gson gson = new Gson();
 
@@ -60,14 +62,16 @@ public class JmsServiceImpl implements JmsService {
                 userDao.createUser(user.getEmail(), user.getPassword());
                 if (emailService.sendConfirmEmail(user)) {
                     session.commit();
+                    logger.info("Email confirmed successfully");
                 } else {
                     session.rollback();
+                    logger.info("Email not confirmed yet");
                 }
             }
         } catch (DataAccessException e) {
-            //TODO logging can\'t rollback
+            logger.error("Data access exception while sending confirm email", e);
         } catch (JMSException e) {
-            //TODO logging can\'t rollback
+            logger.error("Can\'t rollback session while sending confirm email", e);
         }
     }
 

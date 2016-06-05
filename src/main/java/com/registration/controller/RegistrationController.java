@@ -4,6 +4,7 @@ import com.registration.core.EndPoints;
 import com.registration.core.User;
 import com.registration.dao.UserDao;
 import com.registration.util.StringEncryptor;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -19,6 +20,7 @@ import javax.validation.Valid;
  */
 @Controller
 public class RegistrationController {
+    final static Logger logger = Logger.getLogger(RegistrationController.class);
     @Autowired
     private JmsService jmsService;
     @Autowired
@@ -51,12 +53,10 @@ public class RegistrationController {
     @RequestMapping(value = EndPoints.VALIDATION, method = RequestMethod.POST)
     public String validateCredentials(@Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            // TODO logging
-            // errors in password or email verification
+            logger.info("Errors in password or email verification");
             return "fragments/registration";
         }
-        // TODO logging
-        // password and email validated successfully
+        logger.info("Password and email validated successfully");
         jmsService.sendMessage(user);
         return "fragments/success";
     }

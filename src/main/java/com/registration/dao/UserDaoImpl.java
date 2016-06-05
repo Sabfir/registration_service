@@ -2,6 +2,7 @@ package com.registration.dao;
 
 import com.registration.dao.helper.SqlInitializer;
 import com.registration.core.User;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,7 +25,7 @@ import java.util.List;
  */
 @Repository
 public class UserDaoImpl implements UserDao {
-
+    final static Logger logger = Logger.getLogger(UserDaoImpl.class);
     @Autowired
     private JdbcTemplate jdbcTemplateObject;
 
@@ -37,7 +38,7 @@ public class UserDaoImpl implements UserDao {
     public void createUser(String email, String password) throws DataAccessException {
         final String SQL = "insert into users (email, password) values (?, ?)";
         jdbcTemplateObject.update(SQL, email, password);
-        //TODO logging ("Created new user email = " + email);
+        logger.info("Created new user with email " + email);
     }
 
     /**
@@ -70,7 +71,7 @@ public class UserDaoImpl implements UserDao {
     public void deleteUser(String email) throws DataAccessException {
         final String SQL = "delete from users where email = ?";
         jdbcTemplateObject.update(SQL, email);
-        //TODO logging ("Deleted Record with email = " + email );
+        logger.info("Deleted user with email " + email);
     }
 
     /**
@@ -80,7 +81,7 @@ public class UserDaoImpl implements UserDao {
     public void truncateTable() throws DataAccessException {
         final String SQL = "delete from users";
         jdbcTemplateObject.update(SQL);
-        //TODO logging ("Deleted all Record with email = " + email );
+        logger.info("Deleted all users");
     }
 
     /**
@@ -92,7 +93,7 @@ public class UserDaoImpl implements UserDao {
     public void changePassword(String email, String password) throws DataAccessException {
         final String SQL = "update users set password = ? where email = ?";
         jdbcTemplateObject.update(SQL, password, email);
-        System.out.println("Changed password for email " + email);
+        logger.info("Changed password for email " + email);
     }
 
     /**
@@ -104,7 +105,7 @@ public class UserDaoImpl implements UserDao {
     public void changeConfirmation(String email, boolean isConfirmed) throws DataAccessException {
         final String SQL = "update users set is_confirmed = ? where email = ?";
         jdbcTemplateObject.update(SQL, isConfirmed, email);
-        System.out.println("Changed password for email " + email);
+        logger.info("Changed confirmation for email " + email);
     }
 
     /**
@@ -131,7 +132,7 @@ public class UserDaoImpl implements UserDao {
             final Connection connection = this.jdbcTemplateObject.getDataSource().getConnection();
             SqlInitializer.initializeDatabase(connection);
         } catch (SQLException e) {
-            //TODO logging problem with spring jdbcTemplate initialization
+            logger.info("Logging problem with spring jdbcTemplate initialization");
         }
     }
 
