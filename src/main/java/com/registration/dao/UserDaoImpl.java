@@ -16,12 +16,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * The UserDaoImpl class implements CRUD DAO operations.
+ * You can invoke different methods to manage your DB
+ *
+ * @author  Alex Pinta, Oleh Pinta
+ */
 @Repository
 public class UserDaoImpl implements UserDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplateObject;
 
+    /**
+     * This method is used to create user.
+     * It receives email and password and inserts data to the DB
+     */
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public void createUser(String email, String password) throws DataAccessException {
@@ -30,6 +40,10 @@ public class UserDaoImpl implements UserDao {
         //TODO logging ("Created new user email = " + email);
     }
 
+    /**
+     * This method is used to get user by email.
+     * It receives email and returns found user from the DB
+     */
     @Override
     public User getUser(String email) throws DataAccessException {
         String SQL = "select * from users where email = ?";
@@ -37,6 +51,10 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
+    /**
+     * This method is used to get all users.
+     * It returns all users from the users table
+     */
     @Override
     public List<User> listUsers() throws DataAccessException {
         String SQL = "select * from users";
@@ -44,7 +62,10 @@ public class UserDaoImpl implements UserDao {
         return userList;
     }
 
-
+    /**
+     * This method is used to delete user by email.
+     * It receives email and delete all users with the given email
+     */
     @Override
     public void deleteUser(String email) throws DataAccessException {
         String SQL = "delete from users where email = ?";
@@ -52,6 +73,9 @@ public class UserDaoImpl implements UserDao {
         //TODO logging ("Deleted Record with email = " + email );
     }
 
+    /**
+     * This method is used to delete all records from the table users.
+     */
     @Override
     public void truncateTable() throws DataAccessException {
         String SQL = "delete from users";
@@ -59,6 +83,11 @@ public class UserDaoImpl implements UserDao {
         //TODO logging ("Deleted all Record with email = " + email );
     }
 
+    /**
+     * This method is used to change user password.
+     * It receives email and password to be changed
+     * It changes password for all users with the given email
+     */
     @Override
     public void changePassword(String email, String password) throws DataAccessException {
         String SQL = "update users set password = ? where email = ?";
@@ -66,6 +95,11 @@ public class UserDaoImpl implements UserDao {
         System.out.println("Changed password for email " + email);
     }
 
+    /**
+     * This method is used to change user confirmation.
+     * It receives email and confirmation to be changed
+     * It changes confirmation for all users with the given email
+     */
     @Override
     public void changeConfirmation(String email, boolean isConfirmed) throws DataAccessException {
         String SQL = "update users set is_confirmed = ? where email = ?";
@@ -73,6 +107,12 @@ public class UserDaoImpl implements UserDao {
         System.out.println("Changed password for email " + email);
     }
 
+    /**
+     * The UserMapper class
+     * TODO no idea why do we need it
+     *
+     * @author  Alex Pinta, Oleh Pinta
+     */
     private class UserMapper implements RowMapper<User> {
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
             User user = new User(rs.getString("email"), rs.getString("password"));
@@ -81,6 +121,10 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
+    /**
+     * This method is used to initialize your DB.
+     * It invokes create tables algorithms
+     */
     @PostConstruct
     public void initialize() {
         try {
@@ -91,6 +135,10 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
+    /**
+     * TODO
+     * No idea why do we need it
+     */
     public UserDaoImpl() {}
 
 }

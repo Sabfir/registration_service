@@ -5,6 +5,12 @@ import org.hibernate.validator.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+/**
+ * The User class is a model class that contains credentials data
+ * It use Hibernate validator for the email and password verification
+ *
+ * @author  Alex Pinta, Oleh Pinta
+ */
 public class User {
     @NotNull
     @Email
