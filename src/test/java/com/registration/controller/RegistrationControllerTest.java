@@ -71,6 +71,6 @@ public class RegistrationControllerTest {
         final String GUID = "0000-0000000-0000";
         this.mockMvc.perform(get(EndPoints.WELCOME_PAGE.replace("{hashCodeMessage}", GUID)))
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("fragments/welcome"));
+                .andExpect(forwardedUrl("welcome"));
     }
 }

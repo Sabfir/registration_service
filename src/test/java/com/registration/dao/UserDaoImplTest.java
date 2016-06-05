@@ -7,6 +7,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.*;
 
@@ -20,6 +22,7 @@ public class UserDaoImplTest {
     UserDao userDao;
 
     @Test
+    @Transactional(propagation = Propagation.REQUIRED)
     public void testCreateUser() throws Exception {
         final int COUNT_CREATED_USER = 1;
         userDao.createUser(EMAIL, PASSWORD);
@@ -28,6 +31,7 @@ public class UserDaoImplTest {
     }
 
     @Test
+    @Transactional(propagation = Propagation.REQUIRED)
     public void testGetUser() throws Exception {
         userDao.createUser(EMAIL, PASSWORD);
         final User user = userDao.getUser(EMAIL);
@@ -38,6 +42,7 @@ public class UserDaoImplTest {
     }
 
     @Test
+    @Transactional(propagation = Propagation.REQUIRED)
     public void testListUsers() throws Exception {
         final int COUNT_CREATED_USER = 2;
         final String ANOTHER_EMAIL = "test2@test.ua";
@@ -49,6 +54,7 @@ public class UserDaoImplTest {
     }
 
     @Test
+    @Transactional(propagation = Propagation.REQUIRED)
     public void testDelete() throws Exception {
         final int COUNT_CREATED_USER = 0;
         userDao.createUser(EMAIL, PASSWORD);
@@ -57,6 +63,7 @@ public class UserDaoImplTest {
     }
 
     @Test
+    @Transactional(propagation = Propagation.REQUIRED)
     public void testChangePassword() throws Exception {
         final String NEW_PASSWORD = "test_new_password";
         userDao.createUser(EMAIL, PASSWORD);
@@ -66,6 +73,7 @@ public class UserDaoImplTest {
     }
 
     @Test
+    @Transactional(propagation = Propagation.REQUIRED)
     public void testChangeConfirmation() throws Exception {
         final boolean NEW_STATUS_CONFIRMATION = true;
         userDao.createUser(EMAIL, PASSWORD);
