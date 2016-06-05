@@ -2,6 +2,8 @@ package com.registration.controller;
 
 import com.registration.core.EndPoints;
 import com.registration.core.User;
+import com.registration.dao.UserDao;
+import com.registration.util.StringEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -13,6 +15,10 @@ import javax.validation.Valid;
 public class RegistrationController {
     @Autowired
     private JmsService jmsService;
+    @Autowired
+    private UserDao userDao;
+    @Autowired
+    StringEncryptor stringEncryptor;
 
     @RequestMapping(value = {EndPoints.BASE_URL, "/"}, method = RequestMethod.GET)
     public String registrationMain() {
@@ -36,6 +42,10 @@ public class RegistrationController {
 
     @RequestMapping(value = EndPoints.WELCOME_PAGE, method = RequestMethod.GET)
     public String welcomePage(@PathVariable String hashCodeMessage) {
+        String email = stringEncryptor.decrypt(hashCodeMessage);
+        if (email != null) {
+            userDao.changeConfirmation(email, true);
+        }
         return "fragments/welcome";
     }
 }
