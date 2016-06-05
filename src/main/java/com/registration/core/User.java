@@ -1,15 +1,14 @@
 package com.registration.core;
 
 import org.hibernate.validator.constraints.Email;
-
-import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 public class User {
-    @NotNull
     @Email
+    @NotEmpty(message = "Email must be populated")
     private String email;
-    @NotNull
+
     @Pattern.List({
         @Pattern(regexp = ".*[\\d]+.*[\\d]+.*", message = "Invalid password! It should have at least two digits."),
         @Pattern(regexp = ".*[\\!]+.*", message = "Invalid password! It should contain symbol \'!\'."),
