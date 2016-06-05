@@ -29,6 +29,8 @@ public class UserDaoImpl implements UserDao {
     @Autowired
     private JdbcTemplate jdbcTemplateObject;
 
+    public UserDaoImpl() {}
+
     /**
      * This method is used to create user.
      * It receives email and password and inserts data to the DB
@@ -109,8 +111,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     /**
-     * The UserMapper class
-     * TODO no idea why do we need it
+     * The UserMapper class is used for mapping user model and users DB table
      *
      * @author  Alex Pinta, Oleh Pinta
      */
@@ -135,11 +136,4 @@ public class UserDaoImpl implements UserDao {
             logger.info("Logging problem with spring jdbcTemplate initialization");
         }
     }
-
-    /**
-     * TODO
-     * No idea why do we need it
-     */
-    public UserDaoImpl() {}
-
 }
