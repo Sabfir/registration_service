@@ -6,11 +6,14 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 public class User {
-    @NotNull @Email
+    @NotNull
+    @Email
     private String email;
     @NotNull
-    @Pattern(regexp = ".*[\\d]+.*[\\d]+.*",
-            message = "Invalid password! It should have at least two digits.")
+    @Pattern.List({
+        @Pattern(regexp = ".*[\\d]+.*[\\d]+.*", message = "Invalid password! It should have at least two digits."),
+        @Pattern(regexp = ".*[\\!]+.*", message = "Invalid password! It should contain symbol \'!\'."),
+    })
     private String password;
 
     private boolean isConfirmed;

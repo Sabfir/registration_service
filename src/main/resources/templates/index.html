@@ -12,7 +12,7 @@
         function openRegistrationForm() {
             $("#signup").hide().html();
 
-            var url = 'registrationForm';
+            var url = '/registration/registrationForm';
             $("#htmltext").load(url);
         }
         function validateCredentials() {
@@ -20,7 +20,7 @@
             var password = $("#password").val();
             var data = {'email': email, 'password': password};
 
-            var url = 'validation';
+            var url = '/registration/validation';
             $.post(url, data,
                 function(newHtmlText, status){
                     $("#htmltext").html(newHtmlText);
