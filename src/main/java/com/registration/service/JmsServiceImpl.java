@@ -41,8 +41,8 @@ public class JmsServiceImpl implements JmsService {
 
     @Override
     @JmsListener(destination = DESTINATION_QUEUE)
-//    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED,
-//                    rollbackFor = DataAccessException.class)
+    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED,
+                    rollbackFor = DataAccessException.class)
     public void receiveMessage(String message, Session session) {
         User user = gson.fromJson(message, User.class);
         try {

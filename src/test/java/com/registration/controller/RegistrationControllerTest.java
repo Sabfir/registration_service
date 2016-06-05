@@ -1,19 +1,16 @@
 package com.registration.controller;
 
 import com.registration.core.EndPoints;
-import com.registration.core.User;
 import com.registration.service.JmsService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
-import static org.mockito.Mockito.*;
-
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.BindingResult;
-
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
