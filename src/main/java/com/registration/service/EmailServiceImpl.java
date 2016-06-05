@@ -98,14 +98,14 @@ public class EmailServiceImpl implements EmailService {
             message.saveChanges();
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
-            logger.info("Message sent successfully");
+            logger.info("Confirm mail sent successfully");
         } catch(SMTPSendFailedException e) {
             if (e.getReturnCode() == EMAIL_RESPONSE_OK) {
                 returnedCode = true;
             }
-            logger.error("Send failed with the exception", e);
+            logger.error("Send of confirmation failed with the exception", e);
         } catch (Exception e) {
-            logger.error("Unknown error during sending email", e);
+            logger.error("Unknown error during sending confirmation email", e);
         }
         return returnedCode;
     }

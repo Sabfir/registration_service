@@ -62,15 +62,26 @@ public class RegistrationController {
     }
 
     /**
-     * This method is used to open welcome page with the content.
-     * It should be opened after sending mail to the velidated user
+     * This method is used to redirect to the welcome page with the content.
+     * It invokes while user press mailed link
      */
-    @RequestMapping(value = EndPoints.WELCOME_PAGE, method = RequestMethod.GET)
-    public String welcomePage(@PathVariable String hashCodeMessage) {
+    @RequestMapping(value = EndPoints.CONFIRM_PAGE, method = RequestMethod.GET)
+    public String succesRedirection(@PathVariable String hashCodeMessage) {
         String email = stringEncryptor.decrypt(hashCodeMessage);
         if (email != null) {
             userDao.changeConfirmation(email, true);
+            logger.info("User confirmed successfully " + email);
+            return "redirect:"+EndPoints.WELCOME_PAGE;
         }
-        return "fragments/welcome";
+        return "fragments/error";
+    }
+
+    /**
+     * This method is used to open welcome page with the content.
+     * It should be opened after successfully confirmed user
+     */
+    @RequestMapping(value = EndPoints.WELCOME_PAGE, method = RequestMethod.GET)
+    public String welcomePage() {
+        return "welcome";
     }
 }
