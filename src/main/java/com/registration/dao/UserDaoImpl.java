@@ -23,7 +23,7 @@ public class UserDaoImpl implements UserDao {
     private JdbcTemplate jdbcTemplateObject;
 
     @Override
-//    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional(propagation = Propagation.MANDATORY)
     public void createUser(String email, String password) throws DataAccessException {
         String SQL = "insert into users (email, password) values (?, ?)";
         jdbcTemplateObject.update(SQL, email, password);

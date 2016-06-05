@@ -1,14 +1,14 @@
 package com.registration.service;
 
-import com.registration.util.TemplateBuilder;
 import com.sun.mail.smtp.*;
 import com.registration.core.User;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-
 import javax.annotation.PostConstruct;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -26,11 +26,13 @@ public class EmailServiceImpl implements EmailService {
     private String smtpPort;
     private Session session;
     private boolean serviceStatus = true;
-    private SMTPSSLTransport smtpTransport;
+    private SMTPSSLTransport transport;
+
+    @Autowired
+    private TemplateEngine templateEngine;
 
     private EmailServiceImpl() {}
 
-    //problem with setting fields by spring boot during processing constructor class
     @Override
     @PostConstruct
     public void prepareService() {
@@ -42,13 +44,13 @@ public class EmailServiceImpl implements EmailService {
         session = Session.getDefaultInstance(props,null);
 
         try {
-            smtpTransport = (SMTPSSLTransport)session.getTransport("smtps");
-            smtpTransport.connect(smtpHost, emailAddress, password);
+            transport = (SMTPSSLTransport)session.getTransport("smtps");
+            transport.connect(smtpHost, emailAddress, password);
         } catch (MessagingException e) {
             serviceStatus = false;
             //TODO logging inner problem with an access to provider
         }
-        smtpTransport.setReportSuccess(true);
+        transport.setReportSuccess(true);
     }
 
     @Override
@@ -56,6 +58,7 @@ public class EmailServiceImpl implements EmailService {
         final int COUNT_RENDERED_SYMBOLS = 2;
         final String SPECIAL_SYMBOLS = "*";
         final int COUNT_SPECIAL_SYMBOL = 8;
+        final int EMAIL_RESPONSE_OK = 250;
         boolean returnedCode = false;
         String lastPasswordSymbol = StringUtils.repeat(SPECIAL_SYMBOLS, COUNT_SPECIAL_SYMBOL) +
                 user.getPassword().substring(user.getPassword().length()-COUNT_RENDERED_SYMBOLS);
@@ -63,7 +66,7 @@ public class EmailServiceImpl implements EmailService {
         context.setVariable("email", user.getEmail());
         context.setVariable("passwordLastSymbols",  lastPasswordSymbol);
         context.setVariable("hashCodeRegistration", UUID.randomUUID().toString());
-        String content = TemplateBuilder.processTemplate("submitEmailContext", context);
+        String content = templateEngine.process("submitEmailContext", context);
         try {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(emailAddress));
@@ -73,10 +76,10 @@ public class EmailServiceImpl implements EmailService {
             message.setContent(content, "text/html; charset=utf-8");
 
             message.saveChanges();
-            smtpTransport.sendMessage(message, message.getAllRecipients());
-            smtpTransport.close();
+            transport.sendMessage(message, message.getAllRecipients());
+            transport.close();
         } catch(SMTPSendFailedException e) {
-            if (e.getReturnCode() == 250) {
+            if (e.getReturnCode() == EMAIL_RESPONSE_OK) {
                 returnedCode = true;
                 //TODO logging
 
@@ -108,5 +111,9 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public boolean isServiceAccessible() {
         return serviceStatus;
+    }
+
+    public void setTransport(SMTPSSLTransport smtpTransport) {
+        this.transport = smtpTransport;
     }
 }

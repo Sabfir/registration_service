@@ -33,7 +33,7 @@ public class JmsServiceImpl implements JmsService {
     private EmailService emailService;
 
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
 
     public JmsServiceImpl() {
         FileSystemUtils.deleteRecursively(new File("activemq-data"));
@@ -41,8 +41,8 @@ public class JmsServiceImpl implements JmsService {
 
     @Override
     @JmsListener(destination = DESTINATION_QUEUE)
-//    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED,
-//                    rollbackFor = DataAccessException.class)
+    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED,
+                    rollbackFor = DataAccessException.class)
     public void receiveMessage(String message, Session session) {
         User user = gson.fromJson(message, User.class);
         try {
@@ -58,14 +58,6 @@ public class JmsServiceImpl implements JmsService {
             //TODO logging can\'t rollback
         } catch (JMSException e) {
             //TODO logging can\'t rollback
-        } finally {
-//            try {
-//                if (session != null) {
-//                    session.close();
-//                }
-//            } catch (JMSException e) {
-//                //e.printStackTrace();
-//            }
         }
     }
 
@@ -76,5 +68,15 @@ public class JmsServiceImpl implements JmsService {
                 return session.createTextMessage(gson.toJson(user));
             }
         });
+    }
+
+    @Override
+   public void setEmailService(EmailService emailService) {
+        this.emailService = emailService;
+    }
+
+    @Override
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
 }

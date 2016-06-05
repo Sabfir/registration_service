@@ -16,6 +16,6 @@
     <p>Your email is <span th:text="${email}" th:remove="tag"></span> and your password ends on <span th:text="${passwordLastSymbols}" th:remove="tag"></span> </p>
 
     <p>To confirm your account please click on this link</p>
-    <span th:text="'http://localhost:8080/welcomePage/'+${hashCodeRegistration}" th:remove="tag"></span>
+    <span th:text="'http://localhost:8080/registration/welcomePage/'+${hashCodeRegistration}" th:remove="tag"></span>
 </body>
 </html>
